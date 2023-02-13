@@ -1,0 +1,22 @@
+{
+  "name": "aesirx/concordium_login",
+  "description": "",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [],
+  "require": {
+    "aesirxio/concordium-lib": "dev-develop",
+    "jsonrpc/jsonrpc": "dev-master"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/aesirxio/concordium-php-lib"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Aesirx\\Concordium\\": "src/"
+    }
+  }
+}
