@@ -22,7 +22,8 @@ function concordium_start_session(): void
 	}
 }
 
-add_action('login_form', function () {
+function concordium_login_form_button(): void
+{
 	$rand = sprintf("%06d", rand(0, 999999));
 
 	$svg = file_get_contents(ABSPATH . '/wp-content/plugins/concordium-login/assets/images/concordium_black.svg');
@@ -40,20 +41,22 @@ add_action('login_form', function () {
 		'concordium',
 		'CONCORDIUM_VAL',
 		[
-			'siteurl' => get_option('siteurl'),
 			'ajaxurl' => admin_url('admin-ajax.php'),
 		]
 	);
 
 	?>
-	<div class="user-pass-wrap">
+	<div class="concordium-wrap">
 		<button type="button" name="concordium_submit" id="concordium_submit_<?php echo $rand ?>"
 				class="button button-default concordium_submit">
 			<?php echo $svg ?> Concordium
 		</button>
 	</div>
 	<?php
-});
+}
+
+add_action('woocommerce_login_form_end', 'concordium_login_form_button');
+add_action('login_form', 'concordium_login_form_button');
 
 function concordium_set_user_to_nonce(int $userId): void
 {
@@ -94,14 +97,6 @@ function concordium_set_user_to_nonce(int $userId): void
 	);
 
 	$_SESSION['concordium_login_user_id'] = $userId;
-
-	add_action('admin_notices', function (): void {
-		?>
-		<div class="update notice">
-			<p><?php _e('Concordium wallet was successfully linked to the account!', 'concordium-login'); ?></p>
-		</div>
-		<?php
-	});
 }
 
 add_filter('authenticate', function ($user) {
@@ -133,8 +128,8 @@ add_filter('authenticate', function ($user) {
 	return new WP_User($_SESSION['concordium_login_user_id']);
 });
 
+add_action('woocommerce_created_customer', 'concordium_set_user_to_nonce');
 add_action('register_new_user', 'concordium_set_user_to_nonce');
-
 add_action('wp_login', function ($user_login, $user): void {
 	concordium_set_user_to_nonce($user->ID);
 }, 10, 2);

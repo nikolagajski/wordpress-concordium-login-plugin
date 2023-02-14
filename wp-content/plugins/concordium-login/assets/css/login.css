@@ -1,9 +1,9 @@
-.wp-core-ui .concordium_submit {
+.concordium-wrap .concordium_submit {
 	width: 100%;
-	margin: 0 6px 16px 0;
+	margin: 0 0 16px 0;
 	line-height: 2em;
 	white-space: normal;
 }
-.wp-core-ui .concordium_submit svg {
+.concordium-wrap .concordium_submit svg {
 	vertical-align: middle;
 }
