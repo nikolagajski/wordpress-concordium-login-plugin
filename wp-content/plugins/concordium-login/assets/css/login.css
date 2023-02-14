@@ -1,0 +1,9 @@
+.concordium-wrap .concordium_submit {
+	width: 100%;
+	margin: 0 0 16px 0;
+	line-height: 2em;
+	white-space: normal;
+}
+.concordium-wrap .concordium_submit svg {
+	vertical-align: middle;
+}
