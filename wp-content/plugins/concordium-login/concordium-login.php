@@ -6,6 +6,7 @@
  * Author: aesirx.io
  * Author URI: https://aesirx.io/
  * Domain Path: /languages
+ * Text Domain: concordium-login
  **/
 
 require_once 'vendor/autoload.php';
@@ -144,6 +145,12 @@ add_action('wp_logout', function (int $userId): void {
 	$_SESSION['concordium_login_user_id'] = null;
 });
 
+add_action('delete_user', function (int $id): void {
+	global $wpdb;
+
+	$wpdb->delete($wpdb->prefix . 'concordium_nonce', ['user_id' => $id]);
+});
+
 register_activation_hook(__FILE__, function () {
 	global $wpdb;
 
@@ -167,3 +174,30 @@ register_activation_hook(__FILE__, function () {
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 	dbDelta($sql);
 });
+
+function concordium_uninstall(): void
+{
+	delete_option('concordium_login_plugin_options');
+	global $wpdb;
+	$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}concordium_nonce");
+}
+
+register_uninstall_hook(__FILE__, 'concordium_uninstall');
+
+add_action('plugins_loaded', function () {
+	load_plugin_textdomain('concordium-login', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+});
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function ($links) {
+	$url = esc_url(add_query_arg(
+		'page',
+		'concordium-login-plugin',
+		get_admin_url() . 'admin.php'
+	));
+	array_push(
+		$links,
+		"<a href='$url'>" . __('Settings') . '</a>'
+	);
+	return $links;
+});
+

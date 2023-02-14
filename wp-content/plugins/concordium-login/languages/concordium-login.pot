@@ -1,0 +1,146 @@
+# Copyright (C) 2023 aesirx.io
+# This file is distributed under the same license as the concordium-login plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: concordium-login 0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/concordium-login\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-02-14T11:52:20+01:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.7.1\n"
+"X-Domain: concordium-login\n"
+
+#. Plugin Name of the plugin
+msgid "concordium-login"
+msgstr ""
+
+#. Description of the plugin
+msgid "Let users be auth via Concordium."
+msgstr ""
+
+#. Author of the plugin
+msgid "aesirx.io"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://aesirx.io/"
+msgstr ""
+
+#: concordium-login.php:100
+msgid "Concordium wallet was successfully linked to the account!"
+msgstr ""
+
+#. Translators: %s Nonce.
+#: includes/ajax.php:89
+msgid "Sign nonce %s"
+msgstr ""
+
+#: includes/ajax.php:113
+msgid "Concordium account not found"
+msgstr ""
+
+#: includes/ajax.php:141
+#: includes/ajax.php:167
+#: includes/ajax.php:177
+msgid "Concordium is not answering.Try please later 1"
+msgstr ""
+
+#: includes/ajax.php:157
+msgid "Concordium is not answering.Try please later 2"
+msgstr ""
+
+#: includes/ajax.php:183
+msgid "Unknown RPC client"
+msgstr ""
+
+#: includes/ajax.php:192
+msgid "Validation is failed"
+msgstr ""
+
+#: includes/ajax.php:215
+msgid "The wallet does not have an account yet, you can log-in or signup and then the wallet will be linked for future logins"
+msgstr ""
+
+#: includes/ajax.php:220
+msgid "The wallet does not have an account yet, you can log-in and then the wallet will be linked for future logins"
+msgstr ""
+
+#: includes/settings.php:17
+msgid "gRPC Hostname empty."
+msgstr ""
+
+#: includes/settings.php:22
+msgid "Invalid gRPC hostname format."
+msgstr ""
+
+#: includes/settings.php:29
+msgid "JSON-RPC Hostname empty."
+msgstr ""
+
+#: includes/settings.php:34
+msgid "Invalid JSON-RPC hostname format."
+msgstr ""
+
+#: includes/settings.php:39
+msgid "Please select server type."
+msgstr ""
+
+#: includes/settings.php:46
+msgid "Nonce Expiring interval is empty."
+msgstr ""
+
+#: includes/settings.php:57
+msgid "Nonce Expiring interval: Unknown format"
+msgstr ""
+
+#: includes/settings.php:70
+msgid "Here you can set all the options for using the Concordium log-in"
+msgstr ""
+
+#: includes/settings.php:73
+msgid "Select server type"
+msgstr ""
+
+#: includes/settings.php:81
+msgid "JSON-RPC Concordium Client hostname <i>(Use next format: http://example.com:9095)</i>"
+msgstr ""
+
+#: includes/settings.php:85
+msgid "gRPC Concordium Client hostname <i>(Use next format: example.com:10000)</i>"
+msgstr ""
+
+#: includes/settings.php:89
+msgid "Nonce Expiring interval <i>(Available format can be prepared with parameters from <a href=\"https://www.php.net/manual/en/dateinterval.format.php\" target=\"_blank\" rel=\"noopener noreferrer\">PHP DateInterval::format</a>)</i>"
+msgstr ""
+
+#: includes/settings.php:97
+#: includes/settings.php:98
+#: assets/js/login.js:72
+#: assets/js/login.js:74
+#: assets/js/login.js:209
+msgid "Concordium"
+msgstr ""
+
+#: assets/js/login.js:104
+msgid "Concordium is not installed"
+msgstr ""
+
+#: assets/js/login.js:123
+msgid "Signing Nonce"
+msgstr ""
+
+#: assets/js/login.js:181
+msgid "Nonce is signed. Submitting form."
+msgstr ""
+
+#: assets/js/login.js:197
+msgid "Connection to the Concordium browser wallet was rejected. Try Again."
+msgstr ""
+
+#: assets/js/login.js:216
+msgid "Connecting..."
+msgstr ""

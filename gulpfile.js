@@ -7,22 +7,16 @@ async function cleanTask() {
     return del.deleteAsync('./dist/plugin/**', {force:true});
 }
 
-function moveMediaFolderTask() {
-    return gulp.src([
-        './media/plg_system_concordium/**',
-        '!./media/plg_system_concordium/src/**'
-    ]).pipe(gulp.dest('./dist/plugin/media'))
-}
-
 function movePluginFolderTask() {
     return gulp.src([
-        './plugins/system/concordium/**',
+        './wp-content/plugins/concordium-login/**',
+        '!./wp-content/plugins/concordium-login/assets/src/**'
     ]).pipe(gulp.dest('./dist/plugin'))
 }
 
 function compressTask() {
     return gulp.src('./dist/plugin/**')
-        .pipe(zip('plg_system_concordium.zip'))
+        .pipe(zip('plg_concordium_login.zip'))
         .pipe(gulp.dest('./dist'));
 }
 
@@ -39,10 +33,7 @@ async function cleanComposerTask() {
 
 exports.zip = gulp.series(
     cleanTask,
-    gulp.parallel(
-        moveMediaFolderTask,
-        movePluginFolderTask
-    ),
+    movePluginFolderTask,
     composerTask,
     cleanComposerTask,
     compressTask,

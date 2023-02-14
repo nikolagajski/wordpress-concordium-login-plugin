@@ -4,6 +4,7 @@ use Aesirx\Concordium\Exception\ResponseException;
 use Aesirx\Concordium\Helper;
 use Aesirx\Concordium\Request\AccountInfo\AccountInfo;
 use Aesirx\Concordium\Request\AccountTransactionSignature\AccountTransactionSignature;
+use Concordium\P2PClient;
 
 add_action('wp_ajax_nopriv_concordium_nonce', function () {
 	concordium_prepare_response(
@@ -84,6 +85,7 @@ add_action('wp_ajax_nopriv_concordium_nonce', function () {
 
 function getNonceMessage(string $nonce): string
 {
+	// Translators: %s Nonce.
 	return sprintf(__("Sign nonce %s", 'concordium-login'), $nonce);
 }
 
@@ -111,27 +113,80 @@ add_action('wp_ajax_nopriv_concordium_auth', function () {
 				throw new Exception(__('Concordium account not found', 'concordium-login'));
 			}
 
-			$client = new JsonRpc\Client($options['hostname'] ?? '');
-
-			if (!$client->call('getConsensusStatus', []))
+			switch ($options['server_type'] ?? '')
 			{
-				throw new ResponseException($client->error, __('Concordium is not answering.Try please later 1', 'concordium-login'));
-			}
+				case 'gRPC':
+					$client = new P2PClient(
+						$options['g_hostname'] ?? '',
+						[
+							'credentials' => \Grpc\ChannelCredentials::createInsecure(),
+							'update_metadata' => function (array $metadata): array {
+								$metadata['authentication'] = ['rpcadmin'];
 
-			if (!$client->call(
-				'getAccountInfo', [
-					'address' => $accountAddress,
-					'blockHash' => $client->result->lastFinalizedBlock
-				]
-			))
-			{
-				throw new ResponseException($client->error, __('Concordium is not answering.Try please later 1', 'concordium-login'));
+								return $metadata;
+							}
+						]
+					);
+
+					$opt = [
+						// 3 seconds in milliseconds
+						'timeout' => 3000000,
+					];
+
+					/** @var \Concordium\JsonResponse $res */
+					list($res, $res2) = $client->GetConsensusStatus(new \Concordium\PBEmpty, [], $opt)->wait();
+
+					if (!$res || $res->getValue() == 'null')
+					{
+						throw new ResponseException($res2, __('Concordium is not answering.Try please later 1', 'concordium-login'));
+					}
+
+					$status = json_decode($res->getValue(), true);
+
+					/** @var \Concordium\JsonResponse $res3 */
+					list($res, $res2) = $client->GetAccountInfo(
+						(new \Concordium\GetAddressInfoRequest)
+							->setAddress($accountAddress)
+							->setBlockHash($status['lastFinalizedBlock']),
+						[],
+						$opt
+					)->wait();
+
+					if (!$res || $res->getValue() == 'null')
+					{
+						throw new ResponseException($res2, __('Concordium is not answering.Try please later 2', 'concordium-login'));
+					}
+
+					$res = json_decode($res->getValue(), true);
+					break;
+				case 'JSON-RPC':
+					$client = new JsonRpc\Client($options['json_hostname'] ?? '');
+
+					if (!$client->call('getConsensusStatus', []))
+					{
+						throw new ResponseException($client->error, __('Concordium is not answering.Try please later 1', 'concordium-login'));
+					}
+
+					if (!$client->call(
+						'getAccountInfo', [
+							'address' => $accountAddress,
+							'blockHash' => $client->result->lastFinalizedBlock
+						]
+					))
+					{
+						throw new ResponseException($client->error, __('Concordium is not answering.Try please later 1', 'concordium-login'));
+					}
+
+					$res = json_decode(json_encode($client->result), true);
+					break;
+				default:
+					throw new Exception(__('Unknown RPC client', 'concordium-login'));
 			}
 
 			if (!Helper::verifyMessageSignature(
 				getNonceMessage($record->nonce),
 				new AccountTransactionSignature($signed),
-				new AccountInfo(json_decode(json_encode($client->result), true))
+				new AccountInfo($res)
 			))
 			{
 				throw new Exception(__('Validation is failed', 'concordium-login'));
@@ -140,7 +195,6 @@ add_action('wp_ajax_nopriv_concordium_auth', function () {
 			concordium_start_session();
 			$_SESSION['concordium_login_account_address'] = $accountAddress;
 
-			// @todo uninstall
 			if ($record->user_id)
 			{
 				$_SESSION['concordium_login_user_id'] = $record->user_id;
