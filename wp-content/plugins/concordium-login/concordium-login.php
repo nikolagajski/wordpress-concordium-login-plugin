@@ -7,6 +7,7 @@
  * Author URI: https://aesirx.io/
  * Domain Path: /languages
  * Text Domain: concordium-login
+ * Requires PHP: 7.2
  **/
 
 require_once 'vendor/autoload.php';

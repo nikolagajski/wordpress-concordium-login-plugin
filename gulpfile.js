@@ -11,7 +11,7 @@ function movePluginFolderTask() {
     return gulp.src([
         './wp-content/plugins/concordium-login/**',
         '!./wp-content/plugins/concordium-login/assets/src/**'
-    ]).pipe(gulp.dest('./dist/plugin'))
+    ]).pipe(gulp.dest('./dist/plugin/concordium-login'))
 }
 
 function compressTask() {
@@ -22,13 +22,13 @@ function compressTask() {
 
 function composerTask() {
     return composer({
-        "working-dir": "./dist/plugin"
+        "working-dir": "./dist/plugin/concordium-login"
     })
 }
 
 async function cleanComposerTask() {
     const del = await import("del")
-    return del.deleteAsync('./dist/plugin/composer.*', {force:true});
+    return del.deleteAsync('./dist/plugin/concordium-login/composer.*', {force:true});
 }
 
 exports.zip = gulp.series(
