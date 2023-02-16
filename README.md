@@ -63,4 +63,4 @@ Dependent on that select you will need to add the `gRPC` or `JSON-RPC` Concordiu
 - `JSON-RPC` - https://example.com:9095
 
 The last setting is the Nonce Expiring interval to set up the expiration time for singed in.
-The available formats can be found here [https://www.php.net/manual/en/dateinterval.format.php]
+The available formats can be found here [https://www.php.net/manual/en/dateinterval.format.php] 
